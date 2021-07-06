@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>註冊-CMI討論區</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="css/community.css" />
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<style>
+	input {
+		padding: 5px 15px;
+		background: lightblue;
+		border: 0 none;
+		cursor: pointer;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+	}
+</style>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+	<!--註冊-->
+		<div class="row" style="background-image:url(images/pexels-s-migaj-747964.jpg)"> <!-- 註冊表單背景圖 -->
+			<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+			<div class="col-sm-8 offset-sm-2" style="border:5px solid gainsboro;background-color: white;">
+				<div class="row">
+					<div class="col-sm-8 offset-sm-2">
+						<font color="blue" size="4">會員註冊</font>
+					</div>
+				</div>
+				<form action="/signin" method="post">
+					<div id="usernamediv" class="form-group row">
+						<label for="accountId" class="col-sm-2 col-form-label">會員帳號</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="accountId" name="accountId" th:value="${accountId}" placeholder="請輸入帳號" required="required">
+						</div>
+					</div>
+					<div id="passworddiv" class="form-group row">
+						<label for="password" class="col-sm-2 col-form-label">會員密碼</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$" required="required" oninput="setCustomValidity('');" oninvalid="setCustomValidity('請輸入正確的密碼格式:含英數至少六個字元');"/>
+						</div>
+					</div>
+					<div id="repassworddiv" class="form-group row">
+						<label for="repassword" class="col-sm-2 col-form-label">確認密碼</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control"  id="repassword"  name="repassword" placeholder="請再輸入一次密碼" required="required" oninput="setCustomValidity('');" onchange="if(document.getElementById('inputPassword').value != document.getElementById('ConfirmPassword').value){setCustomValidity('密碼不吻合');}">
+							<div class="alert alert-danger " th:text="${error}" th:if="${error != null}"></div>
+						</div>
+						
+					</div>
+					<div class="form-group row">
+						<label for="name" class="col-sm-2 col-form-label">姓名</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="name" name="name" th:value="${name}" placeholder="請輸入姓名" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="email" class="col-sm-2 col-form-label">電子信箱</label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control" id="email" name="email" th:value="${email}" placeholder="請輸入e-mail" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/> 
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">性別</label>
+						<div class="col-sm-8">
+							<input type="radio" name="sex" value="man" checked />男
+							<input type="radio" name="sex" value="woman"  />女
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"></div>
+						<div >
+							<input type="submit">
+							<input type="reset">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+</body>
+</html>

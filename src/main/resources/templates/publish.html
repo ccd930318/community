@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <title>發佈-CMI討論區</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="css/community.css"/>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>	
+<div class="container-fluid main">
+  <div class="row">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+      <h2><span class="glyphicon glyphicon-plus" aria-hidden="true">發表</span></h2>
+      <hr>
+
+      <form action="/publish" method="post">
+        <div class="form-group">
+          <label for="title">問題標題:</label>
+          <input type="text" class="form-control" th:value="${title}" id="title" name="title" placeholder="問題標題...">
+        </div>
+        <div class="form-group">
+          <label for="description">問題內容:</label>
+          <textarea name="description" id="description" th:text="${description}" class="form-control" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+          <label for="tag">添加標籤:</label>
+          <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="添加標籤 以逗號隔開">
+        </div>
+        
+        <div class="container-fluid main">
+    			<div class="row">
+      			<div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" th:text="${error}" th:if="${error != null}"></div>
+      			    <button type="submit" class="btn btn-success btn-publish">發文</button>
+      			</div>
+    		</div>
+     </form>
+    </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+      <h2>備註</h2>
+      <ul>
+        <li>問題標籤:請簡短扼要描述,不超過25個字</li>
+        <li>問題內容:請詳述問題</li>
+        <li>選擇標籤:請選擇一個或多個標籤,用逗號隔開,每個標籤不超過10個字</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

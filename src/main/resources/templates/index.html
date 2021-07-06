@@ -1,46 +1,79 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head> 
-    <title>CMI討論區</title> 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    
+<head>
+<title>發佈-CMI討論區</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="css/community.css" />
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
 </head>
 <body>
-	<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">CountMeIn討論區</span>
-      </button>
-      <a class="navbar-brand" href="#">CountMeIn討論區</a>
-    </div>
+<div th:insert="~{navigation :: nav}"></div>
+	<div class="container-fluid main">
+		<div class="row">
+			<div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+				<h2>
+					<span class="glyphicon glyphicon-list" aria-hidden="true">發現</span>
+				</h2>
+				<hr>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="搜尋問題">
-        </div>
-        <button type="submit" class="btn btn-default">搜尋</button>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" th:if="${session.user != null}">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${session.user.getName()}">會員<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">訊息中心</a></li>
-            <li><a href="#">個人資料</a></li>
-            <li><a href="#">退出登入</a></li>
-          </ul>
-        </li>
-        <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=d9ff4a429b7ca0e28875&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登入</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+				<div class="media" th:each="question:${pagination.questions}">
+					<div class="media-left">
+						<a href="#"> <img class="media-object img-rounded"
+							th:src="${question.user.avatarUrl}">
+						</a>
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">
+							<a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
+						</h4>
+						<span th:text="${question.description}"></span><br> <span
+							class="text-desc"><span th:text="${question.commentCount}"></span>個回覆<span
+							th:text="${question.viewCount}"></span>次瀏覽，<span
+							th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}">13
+								May 2011</span></span>
+					</div>
+				</div>
+				<nav aria-label="Page navigation">
+					<ul class="pagination">
+						<li th:if="${pagination.showFirstPage}">
+							<a href="/?page=1" aria-label="Previous"> 
+								<span aria-hidden="true">&lt;&lt;</span>
+							</a>
+						</li>
+						<li th:if="${pagination.showPrevious}">
+							<a th:href="@{/(page=${pagination.Page-1})}" aria-label="Previous"> 
+								<span aria-hidden="true">&lt;</span>
+							</a>
+						</li>
+						<li th:each="page : ${pagination.pages}" th:class="${pagination.page == page}? 'active':''">
+							<a th:href="@{/(page=${page})}" th:text="${page}" ></a>
+						</li>
+						<li th:if="${pagination.showNext}">
+							<a th:href="@{/(page=${pagination.Page+1})}" aria-label="Next"> <span
+								aria-hidden="true">&gt;</span>
+							</a>
+						</li>
+						<li th:if="${pagination.showEndPage}">
+							<a th:href="@{/(page=${pagination.totalPage})}" aria-label="Next"> 
+								<span aria-hidden="true">&gt;&gt;</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+				<h2>熱門</h2>
+				<ul>
+					<li>問題標籤:請簡短扼要描述,不超過25個字</li>
+					<li>問題內容:請詳述問題</li>
+					<li>選擇標籤:請選擇一個或多個標籤,用逗號隔開,每個標籤不超過10個字</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
