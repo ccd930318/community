@@ -1,6 +1,6 @@
 package community.community.dto;
 
-import community.community.model.User;
+import community.community.model.UserAccount;
 import lombok.Data;
 
 @Data
@@ -15,5 +15,5 @@ public class QuestionDTO {
 	private Integer viewCount;
 	private Integer commentCount;
 	private Integer likeCount;
-	private User user;
+	private UserAccount userAccount;
 }

@@ -29,18 +29,16 @@ public class LoginController {
 						  Model model){
 		model.addAttribute(accountId);
 		model.addAttribute(password);
-		UserAccount userAccount =userAccountMapper.findByAccountId(accountId);
-		if(userAccount == null) {
-			return "login";
-		}
+		UserAccount userAccount = new UserAccount();
+		userAccount =userAccountMapper.findByAccountId(accountId);
 		
-		if(userAccount.getAccountId() != accountId && userAccount.getPassword() != password) {
-			return "login";
+		if(userAccount.getAccountId().equals(accountId) && userAccount.getPassword().equals(password)) {
+			request.getSession().setAttribute("userAccount", userAccount);
+			return "redirect:/";
 		}
-		new Cookie("accountId",accountId);
-		request.getSession().setAttribute("userAccount", userAccount);
+
+		return "login";
 		
-		return "redirect:/";
 	}
 			
 }

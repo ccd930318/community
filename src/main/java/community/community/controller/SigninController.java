@@ -29,6 +29,7 @@ public class SigninController {
 		@RequestParam("name") String name,
 		@RequestParam("email") String email,
 		@RequestParam("sex") String sex,
+		@RequestParam("avatarUrl") String avatarUrl,
 		HttpServletRequest request,
 		Model model) {
 		
@@ -38,26 +39,30 @@ public class SigninController {
 		model.addAttribute("name",name);
 		model.addAttribute("email",email);
 		model.addAttribute("sex",sex);
+		model.addAttribute("avatarUrl",avatarUrl);
 		
-		if(repassword == "" || repassword != password) {
-			model.addAttribute("error","密碼不一致");
-			return "signin";
+//		if(repassword != password) {
+//			model.addAttribute("error","密碼不一致");
+//			return "signin";
+//		}
+		
+		UserAccount user1 = (UserAccount)request.getSession().getAttribute("user");
+		
+		if(user1 != null) {
+			return "index";
 		}
 		
-		UserAccount user = (UserAccount)request.getSession().getAttribute("user");
-		
-		if(user == null) {
-			return "redirect:/";
-		}
-		
+		UserAccount user = new UserAccount();
 			user.setAccountId(accountId);
 			user.setPassword(password);
+			user.setName(name);
 			user.setEmail(email);
 			user.setSex(sex);
 			user.setGmtCreate(System.currentTimeMillis());
 			user.setGmtModified(user.getGmtCreate());
+			user.setAvatarUrl(avatarUrl);
 		
-		userAccountMapper.insert(user);
-		return "redirect:/";
+			userAccountMapper.insert(user);
+			return "redirect:/login";
 	}
 }

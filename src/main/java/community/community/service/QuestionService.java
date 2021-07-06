@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import community.community.dto.PaginationDTO;
 import community.community.dto.QuestionDTO;
 import community.community.mapper.QuestionMapper;
+import community.community.mapper.UserAccountMapper;
 import community.community.mapper.UserMapper;
 import community.community.model.Question;
 import community.community.model.User;
+import community.community.model.UserAccount;
 
 @Service
 public class QuestionService {
@@ -21,7 +23,7 @@ public class QuestionService {
 	private QuestionMapper questionMapper;
 	
 	@Autowired
-	private UserMapper userMapper;
+	private UserAccountMapper userAccountMapper;
 	
 	
 	
@@ -51,10 +53,10 @@ PaginationDTO paginationDTO = new PaginationDTO();
 		List<QuestionDTO> questionDTOList = new ArrayList<QuestionDTO>();
 		
 		for(Question question :questions) {
-			User user = userMapper.findById(question.getCreator());
+			UserAccount userAccount = userAccountMapper.findById(question.getCreator());
 			QuestionDTO questionDTO = new QuestionDTO();
 			BeanUtils.copyProperties(question, questionDTO);
-			questionDTO.setUser(user);
+			questionDTO.setUserAccount(userAccount);
 			questionDTOList.add(questionDTO);
 		}
 		paginationDTO.setQuestions(questionDTOList);
@@ -88,10 +90,10 @@ PaginationDTO paginationDTO = new PaginationDTO();
 		List<QuestionDTO> questionDTOList = new ArrayList<QuestionDTO>();
 		
 		for(Question question :questions) {
-			User user = userMapper.findById(question.getCreator());
+			UserAccount userAccount = userAccountMapper.findById(question.getCreator());
 			QuestionDTO questionDTO = new QuestionDTO();
 			BeanUtils.copyProperties(question, questionDTO);
-			questionDTO.setUser(user);
+			questionDTO.setUserAccount(userAccount);
 			questionDTOList.add(questionDTO);
 		}
 		paginationDTO.setQuestions(questionDTOList);
@@ -102,8 +104,8 @@ PaginationDTO paginationDTO = new PaginationDTO();
 		Question question = questionMapper.getById(id);
 		QuestionDTO questionDTO = new QuestionDTO();
 		BeanUtils.copyProperties(question, questionDTO);
-		User user = userMapper.findById(question.getCreator());
-		questionDTO.setUser(user);
+		UserAccount userAccount = userAccountMapper.findById(question.getCreator());
+		questionDTO.setUserAccount(userAccount);
 		return questionDTO;
 	}
 }

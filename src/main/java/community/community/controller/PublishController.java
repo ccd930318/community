@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import community.community.mapper.QuestionMapper;
 import community.community.model.Question;
 import community.community.model.User;
+import community.community.model.UserAccount;
 
 @Controller
 public class PublishController {
@@ -47,7 +48,7 @@ public class PublishController {
 			return "publish";
 		}
 		
-		User user = (User)request.getSession().getAttribute("user");
+		UserAccount user = (UserAccount)request.getSession().getAttribute("userAccount");
 		
 		if(user == null) {
 			model.addAttribute("error","用戶未登入");
