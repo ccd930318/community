@@ -22,7 +22,7 @@
 				<div class="media" th:each="question:${pagination.questions}">
 					<div class="media-left">
 						<a href="#"> <img class="media-object img-rounded"
-							th:src="${question.user.avatarUrl}">
+							th:src="${question.userAccount.avatarUrl}">
 						</a>
 					</div>
 					<div class="media-body">
@@ -63,9 +63,6 @@
 				<div class="list-group section">
 					<a href="/profile/questions" th:class="${section == 'questions'}? 'active list-group-item':'list-group-item'"> 我的文章</a> 
 					<a href="/profile/replies" th:class="${section == 'replies'}? 'active list-group-item':'list-group-item'">最新回覆<span class="badge">14</span></a> 
-					<a href="#" th:class="${section == 'questions'}? 'active list-group-item':'list-group-item'">Morbi leo risus</a> 
-					<a href="#" th:class="${section == 'questions'}? 'active list-group-item':'list-group-item'">Porta ac consectetur ac</a> 
-					<a href="#" th:class="${section == 'questions'}? 'active list-group-item':'list-group-item'">Vestibulum at eros</a>
 				</div>
 			</div>
 		</div>

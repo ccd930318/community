@@ -3,11 +3,11 @@
 <head> 
     <title>發佈-CMI討論區</title> 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="css/community.css"/>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     
 </head>
 <body>
@@ -19,6 +19,7 @@
       <hr>
 
       <form action="/publish" method="post">
+      	<input type="hidden" name="id" th:value="${id}">
         <div class="form-group">
           <label for="title">問題標題:</label>
           <input type="text" class="form-control" th:value="${title}" id="title" name="title" placeholder="問題標題...">

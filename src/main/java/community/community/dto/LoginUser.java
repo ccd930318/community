@@ -6,4 +6,5 @@ import lombok.Data;
 public class LoginUser {
 	private String accountId;
 	private String password;
+	private String aamuuid;
 }

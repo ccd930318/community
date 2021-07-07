@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import community.community.dto.PaginationDTO;
-import community.community.model.User;
+import community.community.model.UserAccount;
 import community.community.service.QuestionService;
 
 @Controller
@@ -24,7 +24,7 @@ public class ProfileController {
 			Model model,
 			@RequestParam(name = "page",defaultValue = "1") Integer page,
 			@RequestParam(name = "size",defaultValue = "5") Integer size) {
-		User user = (User)request.getSession().getAttribute("user");
+		UserAccount user = (UserAccount)request.getSession().getAttribute("userAccount");
 		if(user == null) {
 			return "redirect:/";
 		}
