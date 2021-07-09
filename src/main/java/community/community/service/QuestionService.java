@@ -12,10 +12,8 @@ import community.community.dto.PaginationDTO;
 import community.community.dto.QuestionDTO;
 import community.community.mapper.QuestionMapper;
 import community.community.mapper.UserAccountMapper;
-import community.community.mapper.UserMapper;
 import community.community.model.Question;
 import community.community.model.QuestionExample;
-import community.community.model.User;
 import community.community.model.UserAccount;
 
 @Service

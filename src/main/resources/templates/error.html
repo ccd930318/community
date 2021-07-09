@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>CMI討論區</title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="css/community.css" />
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div th:insert="~{navigation :: nav}"></div>
+	<div class="jumbotron" style="min-height: 300px;">
+		<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+			<h1>出錯啦！！！</h1>
+			<p th:text="${message}">伺服器太忙了,晚點再試試~</p>
+			<p>
+				<a class="btn btn-primary btn-lg" href="/" role="button">回到討論區</a>
+			</p>
+		</div>
+		<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+			<img class="img-thumbnail" style="width: 35%;"
+				src="pic/logo1.png">
+		</div>
+	</div>
+	<div th:insert="~{footer :: foot}"></div>
+</body>
+</html>
