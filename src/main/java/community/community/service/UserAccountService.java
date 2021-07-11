@@ -24,7 +24,7 @@ public class UserAccountService {
 		if(users.size() == 0) {
 			userAccount.setGmtCreate(System.currentTimeMillis());
 			userAccount.setGmtModified(userAccount.getGmtCreate());
-			userAccountMapper.insert(users);
+			userAccountMapper.insert(userAccount);
 		}else {
 			UserAccount user =users.get(0);
 			UserAccount userUpdate = new UserAccount();

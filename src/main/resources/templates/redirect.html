@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>跳轉頁</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="css/community.css" />
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<style>
+.main{
+	width: 100rem;
+	height: 100rem;
+	border: lightblue;
+	margin: 20% 20% 20% 20%;
+}
+</style>
+</head>
+<body>
+	<div class="col-xs-6 .col-sm-4"></div>
+	<div class="col-xs-6 .col-sm-4">
+		<div class="col-xs-4 .col-sm-4">
+			<div class="main">
+				<p style="text-indent: 2em; margin-top: 30px;">
+					系統將在 <span id="time">5</span> 秒鐘後自動跳轉至新網址，如果未能跳轉，
+				<a href="index.html" title="點擊訪問">請點擊</a>。 
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">  
+  delayURL();	
+  function delayURL() { 
+    var delay = document.getElementById("time").innerHTML;
+ var t = setTimeout("delayURL()", 1000);
+    if (delay > 0) {
+      delay--;
+      document.getElementById("time").innerHTML = delay;
+    } else {
+   clearTimeout(t); 
+      window.location.href = "index.html";
+    }		
+  } 
+</script>
+</body>
+</html>

@@ -20,54 +20,53 @@ import community.community.service.UserAccountService;
 public class AuthorizeController {
 	
 	
-	@Autowired
-	private GithubProvider githubProvider;
-	
-	@Value("{$github.client.id}")
-	private String clientId;
-	@Value("{$github.client.secret")
-	private String clientSecret;
-	@Value("{$github.redirect.uri}")
-	private String redirectUri;
+//	@Autowired
+//	private GithubProvider githubProvider;
+//	
+//	@Value("{$github.client.id}")
+//	private String clientId;
+//	@Value("{$github.client.secret")
+//	private String clientSecret;
+//	@Value("{$github.redirect.uri}")
+//	private String redirectUri;
 	
 	@Autowired
 	private UserAccountService userAccountService;
 	
-	@GetMapping("/callback")
-	public String callback(@RequestParam(name="code") String code,HttpServletRequest request,HttpServletResponse response){
-		AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-		accessTokenDTO.setClient_id(clientId);
-		accessTokenDTO.setClient_secret(clientSecret);
-		accessTokenDTO.setCode(code);
-		accessTokenDTO.setRedirect_uri(redirectUri);
-
-		String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-		GithubUser githubUser = githubProvider.getUser(accessToken);
+//	@GetMapping("/callback")
+//	public String callback(@RequestParam(name="code") String code,HttpServletRequest request,HttpServletResponse response){
+//		AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
+//		accessTokenDTO.setClient_id(clientId);
+//		accessTokenDTO.setClient_secret(clientSecret);
+//		accessTokenDTO.setCode(code);
+//		accessTokenDTO.setRedirect_uri(redirectUri);
+//
+//		String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+//		GithubUser githubUser = githubProvider.getUser(accessToken);
 //		if(githubUser != null && githubUser.getId() != null) {
-		if(githubUser != null) {
-			UserAccount user = new UserAccount();
-			String token = UUID.randomUUID().toString();
-			user.setName(githubUser.getName());
-			user.setAccountId(String.valueOf(githubUser.getId()));
-			user.setAvatarUrl(githubUser.getAvatarUrl());
-			userAccountService.createOrUpdate(user);
-			response.addCookie(new Cookie("token",token));
-			
-			
-			request.getSession().setAttribute("user", githubUser);
-			return "redirect:/";
-		}else {
-			return "redirect:index";
-		}
-	}
+//		if(githubUser != null) {
+//			UserAccount user = new UserAccount();
+//			String token = UUID.randomUUID().toString();
+//			user.setName(githubUser.getName());
+//			user.setAccountId(String.valueOf(githubUser.getId()));
+//			user.setAvatarUrl(githubUser.getAvatarUrl());
+//			userAccountService.createOrUpdate(user);
+//			response.addCookie(new Cookie("token",token));
+//			request.getSession().setAttribute("user", githubUser);
+//			return "redirect:/";
+//		}else {
+//			return "redirect:index";
+//		}
+//	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request,
 						 HttpServletResponse response) {
-		request.getSession().removeAttribute("userAccount");
 		Cookie cookie =new Cookie("accountId",null);
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
+		request.getSession().invalidate();
+		
 		return "redirect:/";
 	}
 }

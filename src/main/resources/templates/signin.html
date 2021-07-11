@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
 <link rel="stylesheet" href="css/community.css" />
+<script type="text/javascript" src="js/151-01.js"></script>
+<script type="text/javascript" src="js/addr.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <style>
 	input {
@@ -34,19 +36,19 @@
 					<div id="usernamediv" class="form-group row">
 						<label for="accountId" class="col-sm-2 col-form-label">會員帳號</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="accountId" name="accountId" th:value="${accountId}" placeholder="請輸入帳號" required="required">
+							<input type="text" class="form-control" id="memAccount" name="memAccount" th:value="${memAccount}" placeholder="請輸入帳號" required="required">
 						</div>
 					</div>
 					<div id="passworddiv" class="form-group row">
 						<label for="password" class="col-sm-2 col-form-label">會員密碼</label>
 						<div class="col-sm-8">
-							<input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$" required="required" oninput="setCustomValidity('');" oninvalid="setCustomValidity('請輸入正確的密碼格式:含英數至少六個字元');"/>
+							<input type="password" class="form-control" id="memPassword" name="memPassword" placeholder="請輸入密碼" pattern="^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$" required="required" oninput="setCustomValidity('');" oninvalid="setCustomValidity('請輸入正確的密碼格式:含英數至少六個字元');"/>
 						</div>
 					</div>
 					<div id="repassworddiv" class="form-group row">
 						<label for="repassword" class="col-sm-2 col-form-label">確認密碼</label>
 						<div class="col-sm-8">
-							<input type="password" class="form-control"  id="repassword"  name="repassword" placeholder="請再輸入一次密碼" required="required" oninput="setCustomValidity('');" onchange="if(document.getElementById('inputPassword').value != document.getElementById('password').value){setCustomValidity('密碼不吻合');}">
+							<input type="password" class="form-control"  id="repassword"  name="repassword" placeholder="請再輸入一次密碼" required="required" oninput="setCustomValidity('');" onchange="if(document.getElementById('repassword').value != document.getElementById('memPassword').value){setCustomValidity('密碼不吻合');}">
 							<div class="alert alert-danger " th:text="${error}" th:if="${error != null}"></div>
 						</div>
 						
@@ -54,26 +56,31 @@
 					<div class="form-group row">
 						<label for="name" class="col-sm-2 col-form-label">姓名</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" id="name" name="name" th:value="${name}" placeholder="請輸入姓名" required="required">
+							<input type="text" class="form-control" id="memName" name="memName" th:value="${memName}" placeholder="請輸入姓名" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="name" class="col-sm-2 col-form-label">電話</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="name" name="memMobile" th:value="${memMobile}" placeholder="請輸入姓名" required="required" maxlength="10">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="email" class="col-sm-2 col-form-label">地址</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="address" name="address" required="required" /> 
 						</div>
 					</div>
 					<div class="form-group row">
 						<label for="email" class="col-sm-2 col-form-label">電子信箱</label>
 						<div class="col-sm-8">
-							<input type="email" class="form-control" id="email" name="email" th:value="${email}" placeholder="請輸入e-mail" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/> 
+							<input type="email" class="form-control" id="email" name="memEmail" th:value="${email}" placeholder="請輸入e-mail" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/> 
 						</div>
 					</div>
 					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">性別</label>
+						<label class="col-sm-2 col-form-label">生日</label>
 						<div class="col-sm-8">
-							<input type="radio" name="sex" value="man" checked />男
-							<input type="radio" name="sex" value="woman"  />女
-						</div>
-					</div>
-					<div class="form-group row">
-						<label for="email" class="col-sm-2 col-form-label">個人圖片URL</label>
-						<div class="col-sm-8">
-							<input type="text" class="form-control" id="avatarUrl" name="avatarUrl" th:value="${avatarUrl}" placeholder="請輸入Url" required="required"/> 
+							<input type="date" min="1930-01-01" max="2023-01-01" required="required" id="memBirth" name="memBirth"/>
 						</div>
 					</div>
 					<div class="form-group row">

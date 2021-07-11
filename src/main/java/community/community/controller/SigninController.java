@@ -46,7 +46,7 @@ public class SigninController {
 //			return "signin";
 //		}
 		
-		UserAccount user1 = (UserAccount)request.getSession().getAttribute("user");
+		UserAccount user1 = (UserAccount)request.getSession().getAttribute("userAccount");
 		
 		if(user1 != null) {
 			return "index";
@@ -63,6 +63,7 @@ public class SigninController {
 			user.setAvatarUrl(avatarUrl);
 		
 			userAccountMapper.insert(user);
+			request.getSession().setAttribute("userAccount",user);
 			return "redirect:/login";
 	}
 }
