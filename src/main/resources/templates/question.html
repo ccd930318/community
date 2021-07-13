@@ -7,8 +7,13 @@
 	<link rel="stylesheet" href="/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/css/bootstrap-theme.min.css" />
 	<link rel="stylesheet" href="/css/community.css" />
+	<link rel="stylesheet" href="/css/editormd.preview.min.css" />
+	<script type="text/javascript" src="/js/moment.js" /></script>
 	<script type="text/javascript" src="/js/community.js" /></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/editormd.min.js"></script>
+	<script src="/js/lib/marked.min.js"></script>
+	<script src="/js/lib/prettify.min.js"></script>
 </head>
 <body>
 	<div th:insert="~{navigation :: nav}"></div>
@@ -25,14 +30,34 @@
 						發布時間:<span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> | 
 						閱讀數:<span th:text="${question.viewCount}"></span>
 					</span>
+					<hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					
+					<!-- 內容 -->
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view">
+						<textarea style="display:none;" th:text="${question.description}"></textarea>	
+						<script type="text/javascript">
+   					 		$(function() {
+				   			 	editormd.markdownToHTML("question-view", {});
+			   		 		});
+						</script>    
+					</div>
+						
+					<!-- 標籤 -->
 					<hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-						th:text="${question.description}"></div>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<span class="label label-info question-tag" th:each="tag : ${question.tag.split(',')}">
+							<span class="glyphicon glyphicon-tag"></span>
+							<span class="label label-info" th:text="${tag}"></span>
+						</span> 
+					</div>
+						
+					<!-- 編輯 -->	
 					<hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<a th:href="@{'/publish/'+ ${question.id}}" class="community-menu" th:if="${session.userAccount != null && session.userAccount.id == question.creator}">
-						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>編輯
-					</a>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<a th:href="@{'/publish/'+ ${question.id}}" class="community-menu" th:if="${session.userAccount != null && session.userAccount.id == question.creator}">
+							<span class="glyphicon glyphicon-pencil" aria-hidden="true">編輯</span>
+						</a>
+					</div>
 				</div>
 			
 
@@ -49,7 +74,7 @@
 									th:src="${comment.userAccount.avatarUrl}">
 								</a>
 							</div>
-							<div class="media-body">
+							<div class="media-body" th:id="${'comment-body-'+comment.id}">
 								<h5 class="media-heading">
 									<span th:text="${comment.userAccount.name}"></span>
 								</h5>
@@ -67,10 +92,10 @@
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments"
                                  th:id="${'comment-'+comment.id}">
 	                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-	                                    <input type="text" class="form-control" placeholder="评论一下……"
+	                                    <input type="text" class="form-control" placeholder="回覆……"
 	                                           th:id="${'input-'+comment.id}">
 	                                    <button type="button" class="btn btn-success pull-right" onclick="comment(this)"
-	                                            th:data-id="${comment.id}">评论
+	                                            th:data-id="${comment.id}">回覆
 	                                    </button>
 	                                </div>
 	                            </div>
@@ -86,16 +111,19 @@
 					</h4>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment-sp">
 						<div class="media">
-							<div class="media-left">
-								<a href="#"> <img class="media-object img-rounded"
-									th:src="${session.userAccount.avatarUrl}">
-								</a>
-							</div>
-							<div class="media-body">
-								<h5 class="media-heading">
-									<span th:text="${session.userAccount.name}"></span>
-								</h5>
-							</div>
+							     <div class="media">
+			                        <div class="media-left">
+			                            <a href="#">
+			                                <img class="media-object img-rounded"
+			                                     th:src="${session.userAccount != null ? session.userAccount.avatarUrl : '/images/default-avatar.png'}">
+			                            </a>
+			                        </div>
+			                        <div class="media-body">
+			                            <h5 class="media-heading">
+			                                <span th:text="${session.userAccount != null ? session.userAccount.name : '訪客'}"></span>
+			                            </h5>
+			                        </div>
+			                    </div>
 						</div>
 						<input type="hidden" id="question_id" th:value="${question.id}">
 						<textarea class="form-control comment" rows="6" id="comment_content"></textarea>
@@ -125,9 +153,15 @@
 				<hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<h4>相關問題</h4>
+					<ul class="question-related">
+						<li th:each="related : ${relatedQuestions}">
+							<a th:href="@{'/question/'+${related.id}}" th:text="${related.title}"></a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>	
+	<div th:insert="~{footer :: foot}"></div>
 </body>
 </html>

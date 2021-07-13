@@ -1,5 +1,7 @@
 package community.community.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +16,18 @@ public class IndexController {
 	@Autowired
 	private QuestionService questionService;
 	
-	@GetMapping("/")
-	public String index(Model model,
-						@RequestParam(name = "page",defaultValue = "1") Integer page,
-						@RequestParam(name = "size",defaultValue = "5") Integer size) {
-		
-		PaginationDTO pagination = questionService.list(page,size);
-		model.addAttribute("pagination",pagination);
-		return "index";		
+    @GetMapping("/")
+    public String index(Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size,
+                        @RequestParam(name = "search", required = false) String search,
+                        @RequestParam(name = "tag", required = false) String tag,
+                        @RequestParam(name = "sort", required = false) String sort) {
+        PaginationDTO pagination = questionService.list(search, tag, sort, page, size);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("search", search);
+        model.addAttribute("tag", tag);
+        model.addAttribute("sort", sort);
+        return "index";		
 	}
 }

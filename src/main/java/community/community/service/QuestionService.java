@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import community.community.dto.PaginationDTO;
 import community.community.dto.QuestionDTO;
+import community.community.dto.QuestionQueryDTO;
+import community.community.enums.SortEnum;
 import community.community.exception.CustomizeErrorCode;
 import community.community.exception.CustomizeException;
 import community.community.mapper.QuestionExtMapper;
@@ -36,43 +38,82 @@ public class QuestionService {
 	
 	
 	
-	public PaginationDTO list(Integer page, Integer size) {
-		PaginationDTO paginationDTO = new PaginationDTO();
-		
-		Integer totalPage;
-		
-		Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
-		
-		if(totalCount % size == 0) {
-			totalPage = totalCount / size;
-		}else {
-			totalPage = (totalCount / size) + 1;
-		}
-		
-		if(page<1) {
-			page = 1;
-		}
-		
-		if(page>totalPage){
-			page = totalPage;
-		}
-		paginationDTO.setPagination(totalPage,page);
-		Integer offset = size*(page-1);
-		List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds());
-		List<QuestionDTO> questionDTOList = new ArrayList<QuestionDTO>();
-		
-		for(Question question :questions) {
-			UserAccount userAccount = userAccountMapper.selectByPrimaryKey(question.getCreator());
-			QuestionDTO questionDTO = new QuestionDTO();
-			BeanUtils.copyProperties(question, questionDTO);
-			questionDTO.setUserAccount(userAccount);
-			questionDTOList.add(questionDTO);
-		}
-		paginationDTO.setQuestions(questionDTOList);
-		return paginationDTO;
-	}
+    public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
+
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays
+                    .stream(tags)
+                    .filter(StringUtils::isNotBlank)
+                    .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.joining("|"));
+        }
+
+        PaginationDTO paginationDTO = new PaginationDTO();
+
+        Integer totalPage;
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        if (StringUtils.isNotBlank(tag)) {
+            tag = tag.replace("+", "").replace("*", "").replace("?", "");
+            questionQueryDTO.setTag(tag);
+        }
+
+        for (SortEnum sortEnum : SortEnum.values()) {
+            if (sortEnum.name().toLowerCase().equals(sort)) {
+                questionQueryDTO.setSort(sort);
+
+                if (sortEnum == SortEnum.HOT7) {
+                    questionQueryDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 7);
+                }
+                if (sortEnum == SortEnum.HOT30) {
+                    questionQueryDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 30);
+                }
+                break;
+            }
+        }
+
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
+        }
+
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > totalPage) {
+            page = totalPage;
+        }
+
+        paginationDTO.setPagination(totalPage, page);
+        Integer offset = page < 1 ? 0 : size * (page - 1);
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+
+        for (Question question : questions) {
+            UserAccount user = userAccountMapper.selectByPrimaryKey(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setDescription("");
+            questionDTO.setUserAccount(user);
+            questionDTOList.add(questionDTO);
+        }
+//        List<QuestionDTO> stickies = questionCache.getStickies();
+//        if (stickies != null && stickies.size() != 0) {
+//            questionDTOList.addAll(0, stickies);
+//        }
+        paginationDTO.setData(questionDTOList);
+        return paginationDTO;
+    }
 	
-	public PaginationDTO list(Long userId,Integer page,Integer size) {
+	public PaginationDTO list( Long userId,Integer page,Integer size) {
 		PaginationDTO paginationDTO = new PaginationDTO();
 		
 		Integer totalPage;
@@ -99,7 +140,7 @@ public class QuestionService {
 		Integer offset = size*(page-1);
 		QuestionExample example = new QuestionExample();
 		example.createCriteria().andCreatorEqualTo(userId);
-		List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds());
+		List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOList = new ArrayList<QuestionDTO>();
 		
 		for(Question question :questions) {
@@ -109,7 +150,7 @@ public class QuestionService {
 			questionDTO.setUserAccount(userAccount);
 			questionDTOList.add(questionDTO);
 		}
-		paginationDTO.setQuestions(questionDTOList);
+		paginationDTO.setData(questionDTOList);
 		return paginationDTO;
 	}
 

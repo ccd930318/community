@@ -17,12 +17,16 @@ import community.community.mapper.UserMapper;
 import community.community.model.User;
 import community.community.model.UserAccount;
 import community.community.model.UserAccountExample;
+import community.community.service.NotificationService;
 
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
 	
 	@Autowired
 	public UserAccountMapper userAccountMapper;
+	
+	@Autowired
+	public NotificationService notificationService;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -37,6 +41,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 					List<UserAccount>userAccounts =userAccountMapper.selectByExample(userAccountExample);
 					if(userAccounts.size() != 0) {
 						request.getSession().setAttribute("userAccount", userAccounts.get(0));
+						Long unreadCount = notificationService.unreadCount(userAccounts.get(0).getId());
+						request.getSession().setAttribute("unreadCount", unreadCount);
 					}
 					break;
 				}
