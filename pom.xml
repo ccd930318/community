@@ -81,7 +81,11 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.12.0</version>
 		</dependency>
-		
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.23</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -98,11 +102,16 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>7.11.0</version>
                 <configuration>
-                    <url>jdbc:h2:~/community</url>
-                    <user>sa</user>
-                    <password>password</password>
+                    <url>jdbc:mysql://localhost:3306/CFA101G1</url>
+                    <user>David</user>
+                    <password>123456</password>
                 </configuration>
                 <dependencies>
+	                <dependency>
+					    <groupId>mysql</groupId>
+					    <artifactId>mysql-connector-java</artifactId>
+					    <version>8.0.23</version>
+					</dependency>
                     <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
@@ -115,6 +124,11 @@
 	          <artifactId>mybatis-generator-maven-plugin</artifactId>
 	          <version>1.4.0</version>
 	          <dependencies>
+	          		<dependency>
+					    <groupId>mysql</groupId>
+					    <artifactId>mysql-connector-java</artifactId>
+					    <version>8.0.23</version>
+					</dependency>
                     <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
